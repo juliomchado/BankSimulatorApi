@@ -1,5 +1,7 @@
 package com.bank.bankapi.services.accounts;
 
+import java.util.List;
+
 import com.bank.bankapi.models.Accounts;
 import com.bank.bankapi.repositories.AccountRepository;
 
@@ -12,10 +14,19 @@ public class AccountsService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public Accounts createAccount(Accounts newAccount) {
+    public boolean createAccount(Accounts newAccount) {
+
         Accounts accountToCreate = accountRepository.insert(newAccount);
 
-        return accountToCreate;
+        if (accountToCreate != null) {
+            return true;
+        }
 
+        return false;
+
+    }
+
+    public List<Accounts> findAll() {
+        return accountRepository.findAll();
     }
 }
