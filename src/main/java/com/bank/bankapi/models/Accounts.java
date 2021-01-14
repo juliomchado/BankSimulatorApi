@@ -3,8 +3,6 @@ package com.bank.bankapi.models;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.bank.bankapi.models.enums.UserType;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

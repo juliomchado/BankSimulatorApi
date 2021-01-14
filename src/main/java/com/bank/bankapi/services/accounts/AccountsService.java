@@ -1,6 +1,7 @@
 package com.bank.bankapi.services.accounts;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.bank.bankapi.models.Accounts;
 import com.bank.bankapi.repositories.AccountRepository;
@@ -28,5 +29,11 @@ public class AccountsService {
 
     public List<Accounts> findAll() {
         return accountRepository.findAll();
+    }
+
+    public Accounts findById(String id) {
+        Optional<Accounts> accounts = accountRepository.findById(id);
+
+        return accounts.orElseThrow(() -> new RuntimeException("Object not exists"));
     }
 }

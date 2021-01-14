@@ -1,12 +1,6 @@
 package com.bank.bankapi.models.dtos;
 
-import java.io.Serializable;
-
-import com.bank.bankapi.models.enums.UserType;
-
-public class AccountsDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class AccountsDTO {
 
     private String id;
 

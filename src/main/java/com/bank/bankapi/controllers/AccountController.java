@@ -6,13 +6,16 @@ import java.util.stream.Collectors;
 import com.bank.bankapi.models.Accounts;
 import com.bank.bankapi.models.dtos.AccountsDTO;
 import com.bank.bankapi.services.accounts.AccountsService;
+import com.bank.bankapi.util.TransformToDTOs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,7 +37,7 @@ public class AccountController {
         boolean accountCreated = accountService.createAccount(newAccount);
 
         if (accountCreated == false) {
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(400).build();
         }
 
         return ResponseEntity.ok().build();
@@ -44,11 +47,19 @@ public class AccountController {
     public ResponseEntity<List<AccountsDTO>> findAll() {
         List<Accounts> accounts = accountService.findAll();
 
-        List<AccountsDTO> accountsConverted = accounts.stream()
-                .map(x -> new AccountsDTO(x.getId(), x.getCode(), x.getBalance(), x.getUserType()))
+        List<AccountsDTO> accountsConverted = accounts.stream().map(x -> TransformToDTOs.fromDTO(x))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(accountsConverted);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AccountsDTO> findById(@PathVariable String id) {
+        Accounts accounts = accountService.findById(id);
+
+        AccountsDTO accountsDTO = TransformToDTOs.fromDTO(accounts);
+
+        return ResponseEntity.ok().body(accountsDTO);
     }
 
 }
