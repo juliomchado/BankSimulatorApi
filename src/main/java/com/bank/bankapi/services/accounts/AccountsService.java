@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.bank.bankapi.models.Accounts;
+import com.bank.bankapi.models.dtos.AccountsDTO;
 import com.bank.bankapi.repositories.AccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,22 @@ public class AccountsService {
         Optional<Accounts> accounts = accountRepository.findById(id);
 
         return accounts.orElseThrow(() -> new RuntimeException("Object not exists"));
+    }
+
+    public boolean updateAccounts(Accounts newAccount) {
+        Accounts account = findById(newAccount.getId());
+
+        if (account != null) {
+
+            account.setCode(newAccount.getCode());
+            account.setBalance(newAccount.getBalance());
+            account.setUserType(newAccount.getUserType());
+
+            accountRepository.save(account);
+
+            return true;
+        }
+
+        return false;
     }
 }
