@@ -6,7 +6,7 @@ import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Document("accounts")
 public class Accounts implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,6 +68,14 @@ public class Accounts implements Serializable {
 
     public void setUserType(String user_type) {
         this.user_type = user_type;
+    }
+
+    public void outcomeBalance(Double valueToAdd){
+        this.balance += valueToAdd;
+    }
+
+    public void incomeBalance(Double valueToRemove){
+        this.balance -= valueToRemove;
     }
 
     @Override

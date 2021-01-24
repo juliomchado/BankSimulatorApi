@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.bank.bankapi.models.Accounts;
-import com.bank.bankapi.models.dtos.AccountsDTO;
 import com.bank.bankapi.repositories.AccountRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,4 +53,17 @@ public class AccountsService {
 
         return false;
     }
+
+    public boolean deleteAccount(String id){
+        Accounts account = findById(id);
+
+        if(account != null){
+            accountRepository.deleteById(id);
+
+            return true;
+        }
+
+        return false;
+    }
+
 }

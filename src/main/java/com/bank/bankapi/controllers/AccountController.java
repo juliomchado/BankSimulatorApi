@@ -10,6 +10,7 @@ import com.bank.bankapi.util.TransformToDTOs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,6 +77,18 @@ public class AccountController {
 
         return ResponseEntity.ok().build();
 
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAccount(@PathVariable String id){
+
+        boolean ifDelete = accountService.deleteAccount(id);
+
+        if(ifDelete == false){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
     }
 
 }
