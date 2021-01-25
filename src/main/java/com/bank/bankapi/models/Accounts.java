@@ -70,11 +70,11 @@ public class Accounts implements Serializable {
         this.user_type = user_type;
     }
 
-    public void outcomeBalance(Double valueToAdd){
+    public void addBalance(Double valueToAdd){
         this.balance += valueToAdd;
     }
 
-    public void incomeBalance(Double valueToRemove){
+    public void withdrawBalance(Double valueToRemove){
         this.balance -= valueToRemove;
     }
 

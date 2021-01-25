@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.bank.bankapi.models.Accounts;
+import com.bank.bankapi.models.Balance;
 import com.bank.bankapi.models.dtos.AccountsDTO;
 import com.bank.bankapi.services.accounts.AccountsService;
 import com.bank.bankapi.util.TransformToDTOs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping(value = "/account")
 public class AccountController {
 
     @Autowired
@@ -60,8 +62,8 @@ public class AccountController {
         Accounts accounts = accountService.findById(id);
 
         AccountsDTO accountsDTO = TransformToDTOs.fromDTO(accounts);
-        return ResponseEntity.ok().body(accountsDTO);
 
+        return ResponseEntity.ok().body(accountsDTO);
     }
 
     @PutMapping("/{id}")
@@ -76,15 +78,29 @@ public class AccountController {
         }
 
         return ResponseEntity.ok().build();
+    }
 
+    @PutMapping(value = "/outcome/{id}")
+    public ResponseEntity<Void> withdrawAccount(@PathVariable String id,
+            @RequestBody(required = true) Balance withdrawBalance) {
+
+        Double withdrawValue = withdrawBalance.getwithdrawBalance();
+
+        boolean ifOutcome = accountService.withdrawAccount(id, withdrawValue);
+
+        if(ifOutcome == false){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable String id){
+    public ResponseEntity<Void> deleteAccount(@PathVariable String id) {
 
         boolean ifDelete = accountService.deleteAccount(id);
 
-        if(ifDelete == false){
+        if (ifDelete == false) {
             return ResponseEntity.badRequest().build();
         }
 

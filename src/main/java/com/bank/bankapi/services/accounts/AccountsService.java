@@ -54,12 +54,25 @@ public class AccountsService {
         return false;
     }
 
-    public boolean deleteAccount(String id){
+    public boolean deleteAccount(String id) {
         Accounts account = findById(id);
 
-        if(account != null){
+        if (account != null) {
             accountRepository.deleteById(id);
 
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean withdrawAccount(String id, Double value) {
+        Accounts account = findById(id);
+
+        if (account != null) {
+            account.withdrawBalance(value);
+
+            accountRepository.save(account);
             return true;
         }
 
