@@ -66,11 +66,24 @@ public class AccountsService {
         return false;
     }
 
-    public boolean withdrawAccount(String id, Double value) {
+    public boolean withdrawBalance(String id, Double value) {
         Accounts account = findById(id);
 
         if (account != null) {
             account.withdrawBalance(value);
+
+            accountRepository.save(account);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean addBalance(String id, Double value) {
+        Accounts account = findById(id);
+
+        if (account != null) {
+            account.addBalance(value);
 
             accountRepository.save(account);
             return true;

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.bank.bankapi.models.Accounts;
-import com.bank.bankapi.models.Balance;
+import com.bank.bankapi.models.withdrawOrAddBalance;
 import com.bank.bankapi.models.dtos.AccountsDTO;
 import com.bank.bankapi.services.accounts.AccountsService;
 import com.bank.bankapi.util.TransformToDTOs;
@@ -80,20 +80,36 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value = "/outcome/{id}")
-    public ResponseEntity<Void> withdrawAccount(@PathVariable String id,
-            @RequestBody(required = true) Balance withdrawBalance) {
+    @PutMapping("/withdraw_balance/{id}")
+    public ResponseEntity<Void> withdrawBalance(@PathVariable String id,
+            @RequestBody(required = true) withdrawOrAddBalance withdrawOrAddBalance) {
 
-        Double withdrawValue = withdrawBalance.getwithdrawBalance();
+        Double withdrawValue = withdrawOrAddBalance.getWithdrawBalance();
 
-        boolean ifOutcome = accountService.withdrawAccount(id, withdrawValue);
+        boolean ifWithdraw = accountService.withdrawBalance(id, withdrawValue);
 
-        if(ifOutcome == false){
+        if (ifWithdraw == false) {
             return ResponseEntity.badRequest().build();
         }
 
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/add_balance/{id}")
+    public ResponseEntity<Void> addBalance(@PathVariable String id,
+            @RequestBody(required = true) withdrawOrAddBalance withdrawOrAddBalance) {
+
+        Double addValue = withdrawOrAddBalance.getAddBalance();
+
+        boolean ifAdd = accountService.addBalance(id, addValue);
+
+        if (ifAdd == false) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable String id) {
